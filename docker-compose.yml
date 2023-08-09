@@ -3,17 +3,24 @@
 # or
 # $ docker-compose run -e MNEMONIC_CMD=<mnemonic_cmd> tofnd
 
-volumes:
-  tofnd:
-
 services:
   tofnd:
     build: .
     container_name: tofnd
     hostname: tofnd
+    networks:
+      massbit:
+        ipv4_address: "172.24.97.9"
     image: axelar/tofnd
     volumes:
-      - tofnd:/.tofnd
+      - ./.tofnd:/.tofnd
     environment:
       # available cmds: auto, create, existing (default), import, export
       - MNEMONIC_CMD=auto
+    ports:
+    - 50051:50051
+
+networks:
+  massbit:
+    external:
+      name: "massbit"
